@@ -1,0 +1,130 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+class Assignment {
+public:
+    int id;
+    std::string title;
+    std::string description;
+
+    Assignment(int id, const std::string& title, const std::string& description)
+        : id(id), title(title), description(description) {}
+};
+
+class AssignmentManager {
+private:
+    std::vector<Assignment> assignments;
+    int nextId = 1;
+
+//Creating a Assignment :)
+
+
+public:
+    void createAssignment(const std::string& title, const std::string& description) {
+        assignments.emplace_back(nextId++, title, description);
+        std::cout << "Assignment created: " << title << std::endl;
+    }
+
+
+//Read Assignment :)
+
+    void readAssignments() const {
+        if (assignments.empty()) {
+            std::cout << "No assignments available." << std::endl;
+            return;
+        }
+        for (const auto& assignment : assignments) {
+            std::cout << "ID: " << assignment.id 
+                      << ", Title: " << assignment.title 
+                      << ", Description: " << assignment.description << std::endl;
+        }
+    }
+    
+//Updating assignment :)
+
+
+    void updateAssignment(int id, const std::string& title, const std::string& description) {
+        for (auto& assignment : assignments) {
+            if (assignment.id == id) {
+                assignment.title = title;
+                assignment.description = description;
+                std::cout << "Assignment updated: " << title << std::endl;
+                return;
+            }
+        }
+        std::cout << "Assignment not found." << std::endl;
+    }
+    
+//Delete Assignment :)
+
+
+    void deleteAssignment(int id) {
+        for (auto it = assignments.begin(); it != assignments.end(); ++it) {
+            if (it->id == id) {
+                assignments.erase(it);
+                std::cout << "Assignment deleted." << std::endl;
+                return;
+            }
+        }
+        std::cout << "Assignment not found." << std::endl;
+    }
+};
+
+//MAIN FUNCTION :)
+
+int main() {
+    AssignmentManager manager;
+    int choice;
+
+    do {
+        std::cout << "\nAssignment Manager Menu:\n"
+                  << "1. Create Assignment\n"
+                  << "2. Read Assignments\n"
+                  << "3. Update Assignment\n"
+                  << "4. Delete Assignment\n"
+                  << "5. Exit\n"
+                  << "Choose an option: ";
+        std::cin >> choice;
+        std::cin.ignore(); // To ignore the newline character after the integer input
+
+        if (choice == 1) {
+     // Create assignment...
+        
+            std::string title, description;
+            std::cout << "Enter assignment title: ";
+            std::getline(std::cin, title);
+            std::cout << "Enter assignment description: ";
+            std::getline(std::cin, description);
+            manager.createAssignment(title, description);
+            
+        } else if (choice == 2) {
+         // Read assignments :)
+         
+            manager.readAssignments();
+        } else if (choice == 3) {
+            
+            int id;
+            std::string title, description;
+            std::cout << "Enter assignment ID to update: ";
+            std::cin >> id;
+            std::cin.ignore();
+            std::cout << "Enter new title: ";
+            std::getline(std::cin, title);
+            std::cout << "Enter new description: ";
+            std::getline(std::cin, description);
+            manager.updateAssignment(id, title, description);
+        } else if (choice == 4) {
+            int id;
+            std::cout << "Enter assignment ID to delete: ";
+            std::cin >> id;
+            manager.deleteAssignment(id);
+        } else if (choice == 5) {
+            std::cout << "Exiting the program." << std::endl;
+        } else {
+            std::cout << "Invalid choice. Please try again." << std::endl;
+        }
+    } while (choice != 5);
+
+    return 0;
+}
