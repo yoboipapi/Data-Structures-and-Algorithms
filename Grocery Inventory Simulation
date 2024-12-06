@@ -1,0 +1,58 @@
+#include <iostream>
+
+#include <vector>
+
+#include <algorithm>
+
+
+
+int main() {
+
+    std::vector<std::string> inventory = {"apples", "bananas", "oranges", "pears"};
+
+    std::vector<std::string> shipment = {"kiwis", "bananas", "grapes"};
+
+    std::vector<std::string> soldOut = {"apples", "oranges"};
+
+
+
+
+    for (const auto& item : soldOut) {
+
+        inventory.erase(std::remove(inventory.begin(), inventory.end(), item), inventory.end());
+
+    }
+
+
+
+
+    for (const auto& item : shipment) {
+
+
+
+        if (std::find(inventory.begin(), inventory.end(), item) == inventory.end()) {
+
+            inventory.push_back(item);
+
+        }
+
+    }
+
+
+
+
+    std::cout << "Updated Inventory: ";
+
+    for (const auto& item : inventory) {
+
+        std::cout << item << " ";
+
+    }
+
+    std::cout << std::endl;
+
+
+
+    return 0;
+
+}
